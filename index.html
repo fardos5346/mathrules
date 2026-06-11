@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הכנה לכיתה ח' - חוקי המרקחת של האלגברה</title>
+    <style>
+        :root {
+            --primary: #4a90e2;
+            --secondary: #5c6bc0;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --bg: #f5f7fa;
+            --card-bg: #ffffff;
+            --text: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 { margin: 0; font-size: 2.5rem; }
+        p.subtitle { margin: 10px 0 0 0; font-size: 1.2rem; opacity: 0.9; }
+
+        .section {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: var(--primary);
+            border-bottom: 2px solid #eef2f5;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .motivation-box {
+            background-color: #e8f4fd;
+            border-right: 5px solid var(--primary);
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+
+        .law-card {
+            background: #f9fbfd;
+            border: 1px solid #e1e8ed;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        /* מניעת בלבול מספרים שליליים וסדר פעולות בעברית */
+        .math-expr {
+            direction: ltr !important;
+            unicode-bidi: bidi-override;
+            display: inline-block;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            font-size: 1.25rem;
+            background: #eef2f5;
+            padding: 4px 10px;
+            border-radius: 4px;
+            letter-spacing: 1px;
+        }
+
+        .grid-questions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media(min-width: 768px) {
+            .grid-questions {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .question-card {
+            border: 1px solid #e1e8ed;
+            padding: 20px;
+            border-radius: 8px;
+            background: #fff;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .question-card.correct { border-color: var(--success); background-color: #f4fbf7; }
+        .question-card.incorrect { border-color: var(--danger); background-color: #fdf5f5; }
+
+        .input-area {
+            margin: 15px 0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        input[type="number"] {
+            width: 90px;
+            padding: 8px;
+            font-size: 1rem;
+            border: 2px solid #ccd1d9;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover { background-color: #357abd; }
+        
+        .btn-refresh {
+            background-color: #2ecc71;
+            font-size: 1.2rem;
+            padding: 12px 24px;
+            display: block;
+            margin: 20px auto;
+        }
+        .btn-refresh:hover { background-color: #27ae60; }
+
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+        .feedback.correct { color: var(--success); }
+        .feedback.incorrect { color: var(--danger); }
+
+        .explanation {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            color: #555;
+            background: #f1f3f5;
+            padding: 8px;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .score-board {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>עולים רגל אחת למעלה: אלגברה לכיתה ח'</h1>
+        <p class="subtitle">חזרה חיונית על חוקי החילוף, הקיבוץ והפילוג (כולל מספרים שליליים!)</p>
+    </header>
+
+    <div class="section">
+        <h2>למה אנחנו בכלל צריכים את זה? (מוטיבציה)</h2>
+        <div class="motivation-box">
+            <strong>בואו נהיה כנים, למה לשנות סדר של מספרים או לפתוח סוגריים?</strong>
+            <ul>
+                <li><strong>חישוב מהיר בראש:</strong> לפעמים לחשב <span class="math-expr">99 &middot; 7</span> זה קשה, אבל לחשב <span class="math-expr">7 &middot; (100 - 1)</span> זה עניין של שתי שניות בזכות חוק הפילוג!</li>
+                <li><strong>כיתה ח' מחכה לכם:</strong> בשנה הקרובה לא תעבדו רק עם מספרים, אלא עם משתנים (כמו x ו-y). כשאי אפשר לחבר פיזית את x עם 3, חוקי הפילוג והקיבוץ הם הכלים היחידים שיאפשרו לכם לפשט ביטויים ולפתור משוואות מורכבות.</li>
+                <li><strong>סידור הבלגן:</strong> החוקים האלו הם "חוקי התנועה" של המתמטיקה. הם קובעים מה מותר ומה אסור לעשות כדי שלא תטעו בסימני המינוס בדרך.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>התיאוריה בקצרה</h2>
+        
+        <div class="law-card">
+            <h3>1. חוק החילוף (Commutative Law)</h3>
+            <p>בחיבור ובכפל, לא משנה הסדר של המספרים - התוצאה תישאר זהה.</p>
+            <p>בחיבור: <span class="math-expr">a + b = b + a</span> &nbsp; | לדוגמה: <span class="math-expr">5 + (-3) = -3 + 5 = 2</span></p>
+            <p>בכפל: <span class="math-expr">a &middot; b = b &middot; a</span> &nbsp; | לדוגמה: <span class="math-expr">4 &middot; (-2) = -2 &middot; 4 = -8</span></p>
+            <p><strong>שים לב:</strong> החוק <strong>לא</strong> עובד בחיסור ובחילוק!</p>
+        </div>
+
+        <div class="law-card">
+            <h3>2. חוק הקיבוץ (Associative Law)</h3>
+            <p>כשיש לנו רצף של פעולות חיבור בלבד או פעולות כפל בלבד, אפשר לשים את הסוגריים איפה שרוצים ולחבר/לכפול איזה זוג שנוח לנו קודם.</p>
+            <p>בחיבור: <span class="math-expr">(a + b) + c = a + (b + c)</span></p>
+            <p>בכפל: <span class="math-expr">(a &middot; b) &middot; c = a &middot; (b &middot; c)</span></p>
+            <p>זה מעולה כדי לקבץ יחד מספרים שמשלימים לעשרות עגולות או מספרים נגדיים שמבטלים זה את זה.</p>
+        </div>
+
+        <div class="law-card">
+            <h3>3. חוק הפילוג (Distributive Law)</h3>
+            <p>חוק הפילוג הוא הגשר בין כפל לבין חיבור/חיסור בתוך סוגריים. המספר שבחוץ "מתארח" ומכפיל את <strong>כל אחד</strong> מהאיברים שבתוך הסוגריים.</p>
+            <p>נוסחה: <span class="math-expr">a &middot; (b + c) = a &middot; b + a &middot; c</span></p>
+            <p><strong>זהירות עם המינוסים!</strong> אם כופלים מספר שלילי, הסימן שלו הולך איתו לכל איבר בסוגריים.</p>
+            <p>לדוגמה: <span class="math-expr">-2 &middot; (x - 5) = -2 &middot; x + (-2) &middot; (-5) = -2x + 10</span></p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>תרגול אינטראקטיבי (20 שאלות בכל סבב)</h2>
+        <p>פתרו את התרגילים הבאים. שימו לב לסימני המינוס (-). ניתן להחליף את השאלות ולתרגל שוב ושוב ללא הגבלה!</p>
+        
+        <div class="score-board" id="scoreBoard">ההצלחה שלך: 0 / 0</div>
+        
+        <button class="btn-refresh" onclick="generateQuiz()">החלף לשאלות חדשות רנדומליות</button>
+
+        <div class="grid-questions" id="quizContainer">
+            </div>
+    </div>
+
+</div>
+
+<script>
+    let totalChecked = 0;
+    let totalCorrect = 0;
+
+    // פונקציה לייצור מספר רנדומלי בטווח (לא כולל 0)
+    function getRandomInt(min, max) {
+        let num = 0;
+        while(num === 0) {
+            num = Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        return num;
+    }
+
+    // ייצור רשימה של 20 שאלות רנדומליות
+    function createQuestions() {
+        const questions = [];
+        
+        for (let i = 0; i < 20; i++) {
+            const type = i % 3; // 0 = פילוג, 1 = קיבוץ/חילוף בחיבור, 2 = פילוג הפוך
+            
+            if (type === 0) {
+                // חוק הפילוג: a * (b + c)
+                const a = getRandomInt(-6, 8);
+                const b = getRandomInt(-5, 10);
+                const c = getRandomInt(-5, 10);
+                const answer = a * (b + c);
+                
+                const bStr = b < 0 ? `(${b})` : `${b}`;
+                const cStr = c < 0 ? `- ${Math.abs(c)}` : `+ ${c}`;
+                
+                // שימוש בסימן נקודה לכפל
+                questions.push({
+                    expr: `${a} &middot; (${bStr} ${cStr})`,
+                    ans: answer,
+                    expl: `לפי חוק הפילוג, כופלים את המספר החיצוני בכל אחד מהאיברים שבתוך הסוגריים: <br> 
+                           <span class="math-expr">${a} &middot; ${bStr} = ${a*b}</span> <br> 
+                           <span class="math-expr">${a} &middot; (${c < 0 ? c : '+'+c}) = ${a*c}</span> <br>
+                           כעת נחבר את התוצאות שקיבלנו: <br>
+                           <span class="math-expr">${a*b} + (${a*c}) = ${answer}</span>.`
+                });
+            } 
+            else if (type === 1) {
+                // חוק החילוף והקיבוץ בחיבור: a + b + c
+                const pair = getRandomInt(-15, 15) * 10; 
+                const a = getRandomInt(-20, 20);
+                const b = pair - a; 
+                const c = getRandomInt(-30, 30);
+                const answer = a + b + c;
+
+                const bStr = b < 0 ? `(${b})` : `${b}`;
+                const cStr = c < 0 ? `(${c})` : `${c}`;
+
+                questions.push({
+                    expr: `${a} + ${cStr} + ${bStr}`,
+                    ans: answer,
+                    expl: `כאן הכי משתלם להשתמש בחוקי החילוף והקיבוץ! <br>
+                           נשנה את סדר האיברים ונחבר קודם את <span class="math-expr">${a}</span> ואת <span class="math-expr">${bStr}</span> כי יחד הם משלימים למספר עגול ונוח: <span class="math-expr">${pair}</span>. <br>
+                           משם נותר רק להוסיף את האיבר האחרון: <span class="math-expr">${pair} + ${cStr} = ${answer}</span>.`
+                });
+            } 
+            else {
+                // חוק הפילוג הפוך (הוצאת גורם משותף)
+                const a = getRandomInt(-5, 6);
+                const b = getRandomInt(2, 12);
+                const c = 10 - b; 
+                const answer = a * b + a * c;
+
+                questions.push({
+                    expr: `${a} &middot; ${b} + ${a} &middot; ${c}`,
+                    ans: answer,
+                    expl: `במקום לבצע שני תרגילי כפל ארוכים, נשתמש בחוק הפילוג בכיוון ההפוך (הוצאת גורם משותף)! <br>
+                           נוציא את <span class="math-expr">${a}</span> מחוץ לסוגריים ונקבל: <br>
+                           <span class="math-expr">${a} &middot; (${b} + ${c})</span>. <br>
+                           הסוגריים נותנים לנו בדיוק <span class="math-expr">10</span>! <br>
+                           והתרגיל הופך לפשוט ביותר: <span class="math-expr">${a} &middot; 10 = ${answer}</span>.`
+                });
+            }
+        }
+        return questions;
+    }
+
+    // רינדור השאלות אל המסך
+    function generateQuiz() {
+        const container = document.getElementById('quizContainer');
+        container.innerHTML = ''; 
+        
+        const questions = createQuestions();
+        
+        questions.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = `q-card-${index}`;
+            
+            card.innerHTML = `
+                <h3>שאלה ${index + 1}</h3>
+                <p>חשבו את ערך הביטוי הבא בצורה חכמה:</p>
+                <div><span class="math-expr">${q.expr}</span></div>
+                
+                <div class="input-area">
+                    <label>התשובה שלך:</label>
+                    <input type="number" id="input-${index}" placeholder="?">
+                    <button onclick="checkAnswer(${index}, ${q.ans})">בדוק</button>
+                </div>
+                
+                <div class="feedback" id="feedback-${index}"></div>
+                <div class="explanation" id="expl-${index}">${q.expl}</div>
+            `;
+            
+            container.appendChild(card);
+        });
+
+        totalChecked = 0;
+        totalCorrect = 0;
+        updateScoreBoard();
+    }
+
+    // בדיקת תשובת המשתמש
+    function checkAnswer(index, correctAns) {
+        const inputEl = document.getElementById(`input-${index}`);
+        const feedbackEl = document.getElementById(`feedback-${index}`);
+        const explEl = document.getElementById(`expl-${index}`);
+        const cardEl = document.getElementById(`q-card-${index}`);
+        
+        const userAnswer = parseInt(inputEl.value, 10);
+        
+        if (isNaN(userAnswer)) {
+            feedbackEl.textContent = "אנא כתבו מספר לפני הבדיקה.";
+            feedbackEl.className = "feedback incorrect";
+            return;
+        }
+
+        const isAlreadyChecked = cardEl.classList.contains('correct') || cardEl.classList.contains('incorrect');
+
+        if (userAnswer === correctAns) {
+            feedbackEl.textContent = "כל הכבוד! תשובה נכונה. 🎉";
+            feedbackEl.className = "feedback correct";
+            cardEl.className = "question-card correct";
+            if (!isAlreadyChecked) {
+                totalCorrect++;
+                totalChecked++;
+            }
+        } else {
+            feedbackEl.textContent = `לא מדויק. התשובה הנכונה היא ${correctAns}.`;
+            feedbackEl.className = "feedback incorrect";
+            cardEl.className = "question-card incorrect";
+            if (!isAlreadyChecked) {
+                totalChecked++;
+            }
+        }
+
+        explEl.style.display = "block";
+        updateScoreBoard();
+    }
+
+    function updateScoreBoard() {
+        const board = document.getElementById('scoreBoard');
+        board.textContent = `ההצלחה שלך בסבב זה: ${totalCorrect} מתוך ${totalChecked} שאלות שנבדקו`;
+    }
+
+    window.onload = generateQuiz;
+</script>
+
+</body>
+</html>
